@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<% include headerStuff %>
+	</head>
+	<body>
+		<% include pageHeader %>
+		<div class="container">
+			<!-- Header Jumbotron -->
+			<div class="jumbotron mt-2">
+				<h1>jumbotron</h1>
+				<p class="lead">Content inside jumbotron</p>
+				<p class="lead">Content inside jumbotron</p>
+				<img src="/onepixel" alt="">
+				<p class="lead">Content inside jumbotron</p>
+			</div>
+			<!-- main content -->
+			<div class="row">
+				<!-- Left Side -->
+				<div class="col-md-9 col-sm-12">
+					<%
+					 if(cats){
+						 cats.forEach(function(cat){
+					%>
+					 <! -- breadcrumb -->
+					 <ol class="breadcrumb alert-info">
+						 <li class="breadcrumb-item">
+							 <a href="#"><span class="fa fa-home"></span></a>
+						 </li>
+						 <li class="breadcrumb-item active">
+							 <a href="#"><%= cat.name %></a>
+						 </li>
+					 </ol>
+					 <!-- End breadcrumb -->
+					 <!-- list card -->
+					 <div class="card-columns" id="<%= cat.tag %>">
+					 </div>
+					 <!-- end list card -->
+					 <% 
+							 })
+						 }
+					 %>
+				</div>
+				<!-- end Left Side -->
+				<!-- Right Side -->
+				<div class="col-md-3 col-sm-12">
+					<!-- Top Post -->
+					<div class="card mb-2">
+						<div class="card-header">
+							<h4>Top Post</h4>
+						</div>
+						<div class="card-body">
+							<ul class="" style="list-style:none">
+								<li class="">Cras justo odio</li>
+								<li class="">Dapibus ac facilisis in</li>
+								<li class="">Morbi leo risus</li>
+								<li class="">Porta ac consectetur ac</li>
+								<li class="">Vestibulum at eros</li>
+							</ul>
+						</div>
+					</div>
+					<!-- Top quote -->
+					<div class="card mb-2">
+						<div class="card-header">
+							<h4>Top quote</h4>
+						</div>
+						<div class="card-body">
+							<ul class="" style="list-style:none">
+								<li class="">Cras justo odio</li>
+								<li class="">Dapibus ac facilisis in</li>
+								<li class="">Morbi leo risus</li>
+								<li class="">Porta ac consectetur ac</li>
+								<li class="">Vestibulum at eros</li>
+							</ul>
+						</div>
+					</div>
+					<!-- Common Tag -->
+					<div class="card mb-2">
+						<div class="card-header">
+							<h4>Common tag</h4>
+						</div>
+						<div class="card-body">
+							<a class="btn" href="#">love</a>
+							<a class="btn" href="#">life</a>
+							<a class="btn" href="#">famous</a>
+							<a class="btn" href="#">spirit</a>
+							<a class="btn" href="#">bussiness</a>
+							<a class="btn" href="#">so young</a>
+							<a class="btn" href="#">albert enstein</a>
+						</div>
+					</div>
+				</div>
+				<!-- End Right Side -->
+			</div>
+		</div>
+		<!-- Modal Alert Login -->
+		<div class="modal fade" id="alertLogin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<!--
+		 <div class="modal-header">
+		 <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+		 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		 <span aria-hidden="true">&times;</span>
+		 </button>
+		 </div>
+					-->
+					<div class="modal-body">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+
+						<p>Bạn cần đăng nhập để sử dụng tính năng này.</p>
+						<p>Click <a class="btn btn-success fa fa-user" href="/login">ĐĂNG NHẬP</a> để đăng nhập.</p>
+					</div>
+					<!--
+		 <div class="modal-footer">
+		 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		 <button type="button" class="btn btn-primary">Save changes</button>
+		 </div>
+					-->
+				</div>
+			</div>
+		</div>
+		<!-- End Alert Login-->
+
+		<!-- Modal remove saved -->
+		<div class="modal fade" id="removesaved" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<!--
+		 <div class="modal-header">
+		 <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+		 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		 <span aria-hidden="true">&times;</span>
+		 </button>
+		 </div>
+					-->
+					<div class="modal-body">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+
+						<h3>Không lưu Danh ngôn này nữa?</h3>
+						<p>Nó sẽ không xuất hiện trong danh sách yêu thích của bạn nữa ?</p>
+					</div>
+		 <div class="modal-footer">
+		 <button type="button"  id="confirmOKRemove" class="btn btn-success">Đồng ý</button>
+		 </div>
+				</div>
+			</div>
+		</div>
+		<!-- End remove saved-->
+
+		<% include pageFooter %>
+		<% include footerStuff %>
+		<script>
+			<% 
+			if(cats){
+			%>
+				var arrCats = [<%- cats %>	];
+				$(function(){
+					/*Append card to category by tag id*/
+					arrCats.forEach(function(cat){
+						var idCard = "#"+cat.tag;
+						$.get(encodeURI("/async/quote/"+cat.name), function(data){
+							$(idCard).append($(data));
+							if($(idCard+">.card").length % 6 == 0){
+								//add nut tai them
+								$(idCard).after(
+										'<p class="text-center">\
+										  <a \
+											  class="load_more fa fa-arrow-down" \
+												data-load-more="'+idCard+
+												'" data-query="'+cat.name+
+												'" href="#">\
+												<strong>Tải thêm</strong>\
+											</a>\
+										 </p>'
+								);
+							}
+
+						});
+					});
+
+					//hand click tai them
+					$(document).on('click','.load_more', function(e){
+						e.preventDefault();
+						var idLoadMore = $(this).data("load-more");
+						var dataQuery = $(this).data("query");
+						//console.log("idLoadMore:"+idLoadMore+", dataQuery:"+dataQuery);
+						$.get(encodeURI(
+									"/async/quote/"+dataQuery
+									+"/"+$(idLoadMore+">.card").length)
+								,function(data){
+									if(data.length > 1){
+										$(idLoadMore).append($(data));
+										//console.log("Num of Card:"+$(idLoadMore+">.card").length);
+										if($(idLoadMore+">.card").length % 6 != 0){
+											//remove nut tai them
+											$("a[data-load-more='"+idLoadMore+"']").parent().remove();
+										}
+									}else{
+										//so ban ghi chia het cho 6 
+										$("a[data-load-more='"+idLoadMore+"']").parent().remove();
+									}
+						});
+					});
+
+					/*
+					 *Handler remove saved quote
+					 */
+					$(document).on('click','a[data-target="#removesaved"]', function(e){
+						alert($(this).data("id"));
+						$("#confirmOKRemove").data("id", $(this).data("id"));
+					});
+					$(document).on('click','#confirmOKRemove', function(e){
+						alert($(this).data("id"));
+						//async remove save quote from db
+					});
+				});
+			<%
+			}
+			%>
+		</script>
+	</body>
+</html>

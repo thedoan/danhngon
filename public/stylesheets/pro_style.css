@@ -1,0 +1,16 @@
+/**for template testing only **/
+/*
+.d-flex {
+	background-color:#cccccc;
+}
+.p-2{
+	background-color: #dddddd;
+}
+.card-masonry-item{
+	margin-bottom:20px;
+}
+*/
+/* dropdown hover*/
+.dropdown:hover>.dropdown-menu {
+	  display: block;
+  }

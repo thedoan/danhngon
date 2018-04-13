@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<% include ../headerStuff %>
+	</head>
+	<body>
+		<% include ../pageHeader %>
+
+		<div class="container">
+			<h2>Test Page</h2>
+			<hr role="separator" />
+			<ul class="list-group" data-list-target>
+				<li class="list-group-item">First element</li>
+				<li class="list-group-item">Other elements</li>
+				<li class="list-group-item">Other elements</li>
+			</ul>
+			<div class="btn-group" data-list-template>
+				<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action<span class="caret"></span></button>
+				<ul class="dropdown-menu">
+					<li><a href="#">Delete</a></li>
+					<li><a href="#">Move</a></li>
+					<li><a href="#">Rename</a></li>
+					<li class="divider" role="separator"></li>
+					<li><a href="#">Download</a></li>
+				</ul>
+			</div>
+		</div>
+		<% include ../pageFooter %>
+		<% include ../footerStuff %>
+		<script>
+			$(function(){
+				var template = $('[data-list-template]').hide().clone();
+				$('[data-list-target] li').append(" ").append($(template).show());
+			});
+		</script>
+	</body>
+</html>

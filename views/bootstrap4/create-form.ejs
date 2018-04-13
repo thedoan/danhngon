@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<% include partial/_headerStuff %>
+		<link rel="stylesheet" href="/vendor/stylesheets/theme.css">
+	</head>
+	<body>
+		<% include partial/_header %>
+		<!-- our code here -->
+		<div class="container">
+			<!-- page title //-->
+			<div class="row card">
+				<div class="card-header alert-info">
+					<h3>
+						Tạo Danh Ngôn
+					</h3>
+				</div>
+				<div class="card-body alert-secondary">
+					<form action="#">
+						<div class="form-group row">
+							<label for="content_quote" class="col-md-2 col-sm-12"><strong>Nội dung:</strong></label>
+							<textarea id="content_quote" name="content_quote" class="form-control col-md-6 col-sm-12" cols="80" rows="6"></textarea>
+						</div>			
+						<div class="form-group row">
+							<label for="author_quote" class="col-md-2 col-sm-12"><strong>Tác giả:</strong></label>
+							<input id="author_quote" name="author_quote" class="form-control col-md-6 col-sm-12">
+						</div>
+						<div class="form-group row">
+							<label for="category_quote" class="col-md-2 col-sm-12"><strong>Chủ đề:</strong></label>
+							<input id="category_quote" name="category_quote" class="form-control col-md-6 col-sm-12">
+						</div>
+						<div class="row form-group">
+							<input type="file" name="bg_quote" id="bg_quote" class="inputfile" />
+							<label for="bg_quote" class="col-md-8 col-sm-12">
+								<svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"></path></svg>
+								<strong>Tải lên ảnh nền</strong></label>
+						</div>
+						<div class="row form-group">
+							<label for="bg_color_quote" class="col-md-2 col-sm-12"><strong>Màu nền:</strong></label>
+							<input class="form-control col-md-6 col-sm-12" style="height: 36px;" type="color" value="#D1ECF1" id="example-color-input">
+						</div>
+						<div class="form-group row">
+							<label class="col-md-2 col-sm-12" for=""><strong>Độ trong suốt:</strong></label>
+							<div class="progress col-md-6 col-sm-12">
+								  <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-md-2 col-sm-0"></div>
+							<div class="col-md-6 col-sm-12">
+								<button class="btn btn-danger form-control" style="width: 60px;float:left;" type="reset"><strong> HỦY</strong></button>
+								<button class="btn btn-success form-control" style="width: 60px;float:right;" type="submit"><strong>TẠO</strong></button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<% include partial/_footer %>
+		<% include partial/_footerStuff %>
+	</body>
+</html>

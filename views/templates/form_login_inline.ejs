@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<% include ../headerStuff %>
+	</head>
+	<body>
+		<% include ../pageHeader %>
+
+		<div class="container">
+			<h2>Test Page</h2>
+			<hr role="separator" />
+
+		</div>
+		<div class="container">
+			<form action="#" class="form-inline">
+				<div class="form-group">
+					<label for="exampleInputEmail" class="sr-only">E-Mail</label>
+					<input id="exampleInputEmail" class="form-control" type="text" placeholder="Email">
+				</div>
+				<div class="form-group">
+					<label for="exampleInputPassword" class="sr-only">Password</label>
+					<input id="exampleInputPassword" class="form-control" type="text" placeholder="Password">
+				</div>
+				<div class="checkbox">
+					<label><input type="checkbox"> Remember</label>
+				</div>
+				<button class="btn btn-secondary" type="submit">Logon</button>
+			</form>
+		</div>
+		<% include ../pageFooter %>
+		<% include ../footerStuff %>
+	</body>
+</html>

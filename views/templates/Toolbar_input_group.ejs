@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<% include ../headerStuff %>
+	</head>
+	<body>
+		<% include ../pageHeader %>
+
+		<div class="container">
+			<h2>Test Page</h2>
+			<hr role="separator" />
+
+		</div>
+		<div class="container">
+			<form action="#" class="form-inline">
+			<div class="input-group">
+				<span id="basic-addon1" class="input-group-addon">@</span>
+				<input class="form-control" type="text" placeholder="User" aria-describledby="basic-addon1">
+			</div>
+			<div class="input-group">
+				<input class="form-control" type="text" placeholder="Email" aria-describedby="basic-addon2">
+				<span id="basic-addon2" class="input-group-addon">@example.com</span>
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon">&euro;</span>
+				<input class="form-control" type="text" aria-label="Amount (in EUR)">
+				<span class="input-group-addon">.OO</span>
+			</div>
+			</form>
+		</div>
+		<% include ../pageFooter %>
+		<% include ../footerStuff %>
+	</body>
+</html>

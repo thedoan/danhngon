@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<% include ../partial/headerStuff %>
+	</head>
+	<body>
+		<% include ../partial/navbar %>	
+		<div class="container">
+			<div class="card">
+				<div class="card-header alert-info">
+					<h3>Đăng Nhập</h3>	
+				</div>
+				<div class="card-body">
+					<form action="/login" name="formUserLogin" method="post">
+						<% if (message.length > 0) { %>
+						<div class="form-group row">
+							<div class="col-md-2 col-sm-0"></div>
+							<div class="alert alert-danger col-md-6 col-sm-12"><%= message %></div>
+						</div>
+
+						<% } %>
+						<div class="form-group row">
+							<label for="email" class="col-md-2 col-sm-12"><strong>Email:</strong></label>
+							<input type="email" class="form-control col-md-6 col-sm-12" id="email" name="email">
+						</div>			
+						<div class="form-group row">
+							<label for="password" class="col-md-2 col-sm-12"><strong>Password:</strong></label>
+							<input type="password" class="form-control col-md-6 col-sm-12" id="password" name="password">
+						</div>
+						<div class="form-group row">
+							<div class="col-md-2 col-sm-0"></div>
+							<div class="col-md-6 col-sm-12">
+								<button class="btn btn-success fa fa-user" type="submit"><strong>ĐĂNG NHẬP</strong></button>
+
+								<span class="mx-2">Chưa có tài khoản?</span> <a href="/signup"><span class="h5">Đăng Ký</span></a>
+							</div>
+						</div>
+					</form>
+					<div class="row">
+						<div class="col-md-2 col-sm-0"></div>
+						<div class="col-md-6 col-sm-12">
+							<span class="mb-2">Hoặc đăng nhập bằng</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2 col-sm-0"></div>
+						<div class="col-md-6 col-sm-12">
+							<a class="btn btn-primary fa fa-facebook" href="/auth/facebook">FACEBOOK</a>
+							<a class="btn btn-info fa fa-twitter" href="/auth/twitter">TWITTER</a>
+							<a class="btn btn-danger fa fa-google-plus" href="/auth/google">GOOGLE</a>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<% include ../partial/footerStuff %>
+		<% include ../partial/footer %>
+	</body>
+</html>
+

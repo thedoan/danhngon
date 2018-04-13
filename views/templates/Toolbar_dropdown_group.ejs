@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<% include ../headerStuff %>
+	</head>
+	<body>
+		<% include ../pageHeader %>
+
+		<div class="container">
+			<h2>Test Page</h2>
+			<hr role="separator" />
+
+		</div>
+		<div class="container">
+			<form action="#">
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="input-group">
+							<div class="input-group-btn">
+								<button class="btn btn-default dropdown-toggle" 
+				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="button">
+									Selection<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+									<li><a href="#">Details</a></li>
+									<li><a href="#">Copy</a></li>
+									<li><a href="#">Move</a></li>
+									<li class="divider" role="separator"></li>
+									<li><a href="#">Delete</a></li>
+								</ul>
+							</div>
+							<input class="form-control" type="text" aria-label="">
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="input-group">
+							<input class="form-control" type="text" aria-label="">
+							<div class="input-group-btn">
+								<button class="btn btn-default dropdown-toggle" 
+				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="button">
+									Selection<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+									<li><a href="#">Details</a></li>
+									<li><a href="#">Copy</a></li>
+									<li><a href="#">Move</a></li>
+									<li class="divider" role="separator"></li>
+									<li><a href="#">Delete</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<% include ../pageFooter %>
+		<% include ../footerStuff %>
+	</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<% include headerStuff %>
+	</head>
+	<body>
+		<% include pageHeader %>
+
+		<div class="container">
+			<div class="jumbotron mt-2">
+				<h1>jumbotron</h1>
+				<p class="lead">Content inside jumbotron</p>
+				<p class="lead">Content inside jumbotron</p>
+				<p class="lead">Content inside jumbotron</p>
+			</div>
+			<div class="row">
+				<div class="col-md-9 col-sm-12">
+					<%
+					if(quotes){
+						quotes.forEach(function(quoteData){
+						%>
+					<ol class="breadcrumb alert-info">
+						<li class="breadcrumb-item"><a href="#"><span class="fa fa-home"></span></a></li>
+						<li class="breadcrumb-item active"><a href="#"><%= quoteData.name %></a></li>
+					</ol>
+
+					<div class="card-columns">
+					    <%
+							quoteData.data.forEach(function(quote){
+						%>
+						<div class="card">
+							<blockquote class="card-block card-blockquote">
+								<p><%= quote.content %></p>
+								<footer class="blockquote-footer"><%= quote.author %></footer>
+							</blockquote>
+							
+						</div>
+					<%	
+							})
+					    })
+					}
+					%>
+						
+					</div>
+
+				</div>
+				<div class="col-md-3 col-sm-12">
+					<div class="card mb-2">
+						<div class="card-header">
+							<h4>Top Post</h4>
+						</div>
+						<div class="card-body">
+							<ul class="" style="list-style:none">
+								<li class="">Cras justo odio</li>
+								<li class="">Dapibus ac facilisis in</li>
+								<li class="">Morbi leo risus</li>
+								<li class="">Porta ac consectetur ac</li>
+								<li class="">Vestibulum at eros</li>
+							</ul>
+						</div>
+					</div>
+					<div class="card mb-2">
+						<div class="card-header">
+							<h4>Top quote</h4>
+						</div>
+						<div class="card-body">
+							<ul class="" style="list-style:none">
+								<li class="">Cras justo odio</li>
+								<li class="">Dapibus ac facilisis in</li>
+								<li class="">Morbi leo risus</li>
+								<li class="">Porta ac consectetur ac</li>
+								<li class="">Vestibulum at eros</li>
+							</ul>
+						</div>
+					</div>
+					<div class="card mb-2">
+						<div class="card-header">
+							<h4>Common tag</h4>
+						</div>
+						<div class="card-body">
+							<a class="btn" href="#">love</a>
+							<a class="btn" href="#">life</a>
+							<a class="btn" href="#">famous</a>
+							<a class="btn" href="#">spirit</a>
+							<a class="btn" href="#">bussiness</a>
+							<a class="btn" href="#">so young</a>
+							<a class="btn" href="#">albert enstein</a>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<% include pageFooter %>
+		<% include footerStuff %>
+	</body>
+</html>

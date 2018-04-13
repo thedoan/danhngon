@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<% include headerStuff %>
+	</head>
+	<body>
+		<% include pageHeader %>
+
+		<div class="container">
+			<div class="card">
+				<div class="card-header alert-info">
+					<h1><span class="fa fa-user"></span>Đăng ký người dùng</h1>	
+				</div>
+				<div class="card-body">
+					<form action="/signup" method="post">
+						<% if (message.length > 0) { %>
+						<div class="form-group row">
+							<div class="col-md-3 col-sm-0"></div>
+							<div class="alert alert-danger col-md-6 col-sm-12"><%= message %></div>
+						</div>
+
+						<% } %>
+
+						<div class="form-group row">
+							<label for="name" class="col-md-3 col-sm-12"><strong>Họ Tên:</strong></label>
+							<input type="text" class="form-control col-md-6 col-sm-12" id="name" name="name">
+						</div>
+						<div class="form-group row">
+							<label for="email" class="col-md-3 col-sm-12"><strong>Email:</strong></label>
+							<input type="email" class="form-control col-md-6 col-sm-12" id="email" name="email">
+						</div>			
+
+						<div class="form-group row">
+							<label for="password" class="col-md-3 col-sm-12"><strong>Mật Khẩu:</strong></label>
+							<input type="password" class="form-control col-md-6 col-sm-12" id="password" name="password">
+						</div>
+						<div class="form-group row">
+							<label for="repassword" class="col-md-3 col-sm-12"><strong>Nhắc Lại Mật Khẩu:</strong></label>
+							<input type="password" class="form-control col-md-6 col-sm-12" id="repassword" name="repassword">
+						</div>
+
+						<div class="form-group row">
+							<div class="col-md-3 col-sm-0"></div>
+							<div class="col-md-6 col-sm-12">
+								<button class="btn btn-success" type="submit"><strong><span class="fa fa-user"></span>TẠO NGƯỜI DÙNG</strong></button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<% include pageFooter %>
+		<% include footerStuff %>
+	</body>
+</html>
+

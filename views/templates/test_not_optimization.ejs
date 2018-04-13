@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<% include ../headerStuff %>
+	</head>
+	<body>
+		<% include ../pageHeader %>
+
+		<div class="container">
+			<h2>Test Page</h2>
+			<hr role="separator" />
+			<ul class="list-group">
+				<li class="list-group-item">First element
+					<div class="btn-group">
+						<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aktion<span class="caret"></span></button>
+						<ul class="dropdown-menu">
+							<li><a href="#">Delete</a></li>
+							<li><a href="#">Move</a></li>
+							<li><a href="#">Rename</a></li>
+							<li class="divider" role="separator"></li>
+							<li><a href="#">Download</a></li>
+						</ul>
+					</div>
+				</li>
+				<li>Other elements</li>
+				<li>Other elements</li>
+			</ul>
+		</div>
+		<% include ../pageFooter %>
+		<% include ../footerStuff %>
+	</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<% include ../headerStuff %>
+	</head>
+	<body>
+		<% include ../pageHeader %>	
+
+		<div class="container">
+			<div class="card">
+				<div class="card-header alert-info">
+					<h1>Mongoose Project Management</h1>		
+				</div>
+				<div class="card-body">
+					<h2><%= name %></h2>		 
+					<p>Email: <%= email%></p>
+					<h3>Actions</h3>
+					<ul>
+						<li><a href="/project/new">Create a new Project</a></li>
+						<li><a href="/user/edit">Edit user info</a></li>
+						<li><a href="/user/delete">Delete <%= name %></a></li>
+						<li><a href="/logout">Logout</a></li>
+					</ul>
+					<h3>My Project</h3>
+					<ul id="myprojects">
+						<li>loading...</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<% include ../pageFooter %>
+		<% include ../footerStuff %>
+		<script>
+			var userID = "<%= userID %>";
+		</script>
+		<script src="/javascripts/user.js"></script>
+	</body>
+</html>
+

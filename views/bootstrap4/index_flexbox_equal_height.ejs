@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<% include partial/_headerStuff %>
+		<style>
+			.parent {
+				width:100%;
+				display: flex;
+				/*align-items: flex-start;*/
+				/*align-items: flex-end;*/
+				align-items:center;
+				/*flex-direction: row-reverse;*/
+				/*flex-direction:column;*/
+				/*flex-wrap:wrap;*/
+				background: #ccc;
+				padding: 5%;
+				font-family: helvetica;
+			}
+			.child {
+				padding: 2%;
+				background: white;
+				flex-grow: 1;
+				min-width: 200px;
+			}
+			/*
+			.child:nth-of-type(1) {
+				order: 2;
+			}
+			.child:nth-of-type(2) {
+				order: 3;
+			}
+			.child:nth-of-type(3) {
+				order: 1;
+			}
+			*/
+		</style>
+	</head>
+	<body>
+		<% include partial/_header %>
+		<!-- our code here -->
+		<div class="parent">
+			<div class="child">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+			</div>
+			<div class="child">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim	ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+			</div>
+			<div class="child">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim	ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur	adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna	aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet,	consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+			</div>
+		</div>
+		<% include partial/_footer %>
+		<% include partial/_footerStuff %>
+	</body>
+</html>
