@@ -93,9 +93,38 @@
 				<!-- End Right Side -->
 			</div>
 		</div>
+<!-- Modal remove saved -->
+		<div class="modal fade" id="removesaved" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<!--
+		 <div class="modal-header">
+		 <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+		 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		 <span aria-hidden="true">&times;</span>
+		 </button>
+		 </div>
+					-->
+					<div class="modal-body">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+
+						<h3>Không lưu Danh ngôn này nữa?</h3>
+						<p>Nó sẽ không xuất hiện trong danh sách yêu thích của bạn nữa ?</p>
+					</div>
+		 <div class="modal-footer">
+		 <button type="button"  id="confirmOKRemove" class="btn btn-success">Đồng ý</button>
+		 </div>
+				</div>
+			</div>
+		</div>
+		<!-- End remove saved-->
+
+
 		<!-- Modal Alert Login -->
 		<div class="modal fade" id="alertLogin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
+			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
 					<!--
 		 <div class="modal-header">
@@ -124,42 +153,16 @@
 		</div>
 		<!-- End Alert Login-->
 
-		<!-- Modal remove saved -->
-		<div class="modal fade" id="removesaved" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<!--
-		 <div class="modal-header">
-		 <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-		 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		 <span aria-hidden="true">&times;</span>
-		 </button>
-		 </div>
-					-->
-					<div class="modal-body">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-
-						<h3>Không lưu Danh ngôn này nữa?</h3>
-						<p>Nó sẽ không xuất hiện trong danh sách yêu thích của bạn nữa ?</p>
-					</div>
-		 <div class="modal-footer">
-		 <button type="button"  id="confirmOKRemove" class="btn btn-success">Đồng ý</button>
-		 </div>
-				</div>
-			</div>
-		</div>
-		<!-- End remove saved-->
-
-		<% include pageFooter %>
+				<% include pageFooter %>
 		<% include footerStuff %>
 		<script>
+			var host = "http://localhost:3000";
 			<% 
 			if(cats){
 			%>
 				var arrCats = [<%- cats %>	];
 				$(function(){
+					var userID =  $('input[name=userID]').val();
 					/*Append card to category by tag id*/
 					arrCats.forEach(function(cat){
 						var idCard = "#"+cat.tag;
@@ -209,15 +212,93 @@
 
 					/*
 					 *Handler remove saved quote
+					 *
 					 */
+					/*
 					$(document).on('click','a[data-target="#removesaved"]', function(e){
-						alert($(this).data("id"));
+						//alert($(this).data("id"));
 						$("#confirmOKRemove").data("id", $(this).data("id"));
 					});
 					$(document).on('click','#confirmOKRemove', function(e){
-						alert($(this).data("id"));
+						//alert($(this).data("id"));
 						//async remove save quote from db
 					});
+					*/
+					/*
+					 * Handler save a quote to favorite
+					 * We know that both save and unsave favorite quote have data-id
+					 * So we select a tag with attribute data-id to: 
+					 *    - get it data-id
+					 *    - check if it has data-toggle, data-target so it savedQuote in favorite
+					 *    - else it not savedQuote so make it savedQuote 
+					 * i mean add add data-toggle, data-target to it
+					 */
+						$(document).on('click','a[data-id]', function(e){
+							e.preventDefault();
+							var that = this;
+							// Spiner this span
+							$(this).children('span').removeClass("fa-save").addClass("fa-spin");
+							//put quote id to confirmOkRemove	
+							if($(this).attr('data-target')) {
+								$("#confirmOKRemove").data("id", $(this).data("id"));
+							}else{
+								//Get user id, quote id
+								var quoteID = $(this).data("id"); 
+								$.get(encodeURI(
+									"/async/quote/saveuser/quoteid/"+quoteID+"/userid/"+userID)
+										,function(data){
+											console.log("save status:",data.status);
+											//remove spiner
+											$(that).children('span').removeClass("fa-spin");
+											if(data.status == "ok"){
+												//add check	
+												$(that).children('span').addClass("fa-check");
+											}else{
+												//add back save	
+												$(that).children('span').addClass("fa-save");
+											}
+											//console.log(data);
+										});
+								// save favorite quote to db
+								// require that you already loggedIn
+								//set data-target data-modal
+								$(this)
+									.attr('data-toggle','modal')
+									.attr('data-target','#removesaved');
+							}
+						//alert($(this).data("id"));
+						});
+						$(document).on('click','#confirmOKRemove', function(e){
+							//alert($(this).data("id"));
+							//async remove save quote from db
+								let qId = $(this).data("id");
+								$.get(encodeURI(
+									"/async/quote/removeuser/quoteid/"+$(this).data("id")+"/userid/"+userID)
+										,function(data){
+											console.log("remove status:",data.status);
+											//remove spiner
+											$("a[data-id="+qId+"]").children('span').removeClass("fa-spin");
+											if(data.status == "ok"){
+												$("a[data-id="+qId+"]")
+													//remove data-toggle and data-target attr
+													.removeAttr("data-toggle").removeAttr("data-target")
+													//add save	
+													.children('span').addClass("fa-save");
+												
+											}else{
+												//add back check 
+												$("a[data-id="+qId+"]").children('span').addClass("fa-check");
+											}
+											//console.log(data);
+										});
+
+							// method to send quote to favorite bookmark
+
+							// handler data from server
+							// hide dialog
+							$("#removesaved").modal('hide');
+						});
+
 				});
 			<%
 			}

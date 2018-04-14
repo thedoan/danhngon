@@ -79,6 +79,7 @@
 			   email = user.google.email;
 		   }
 		   %>
+			 <input type="hidden" name="userID" value="<%= user.id %>"/>
 		   <ul class="navbar-nav">
 			<li class="nav-item dropdown">
  <a class="nav-link dropdown-toggle" href="#" id="userinfo" data-toggle="dropdown" aria-haspopup="true" aria-expended="false">
@@ -93,7 +94,6 @@
 				   <% } %>
 				   <a class="dropdown-item" href="/logout">Logout</a>
 			   </div>
-
 			</li>
 			</ul>
 		   <% }else{ %>

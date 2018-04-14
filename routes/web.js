@@ -84,7 +84,6 @@ module.exports = function(app, passport) {
 				if(err) return next(err);
 				//console.log(resultQuotes);
 				//console.log("--------");
-
 				if(Object.keys(resultQuotes).length > 0){
 					res.render('quote_by_cat',{quotes: resultQuotes, user: req.user});
 				}else{
@@ -106,6 +105,65 @@ module.exports = function(app, passport) {
 			});
 
 	});
+	// Ajax add saved user to quote
+	webRouter.get("/async/quote/saveuser/quoteid/:quoteid/userid/:userid", function(req, res, next) {
+		Quote.findById(req.params.quoteid, function(err, quote) {
+			if(err) {
+				res.json(oInternalError);
+				return;
+			}else{
+				quote.saved_user.push(req.params.userid);
+				quote.save(function(err) {
+					if(err) {
+						res.json(oInternalError);
+						return;
+					}else {
+						res.json({
+							status: "ok",
+							data: "Success saved favourite quote"
+						});
+						return;
+					}
+				});
+			}
+		});
+		//Quote.findOneAndUpdate({_id: req.params.quoteid});	
+	});
+	// Ajax remove saved user to quote
+	webRouter.get("/async/quote/removeuser/quoteid/:quoteid/userid/:userid", function(req, res, next) {
+		Quote.findById(req.params.quoteid, function(err, quote) {
+			if(err) {
+				res.json(oInternalError);
+				return;
+			}else{
+				//handler length of userid
+				let index = quote.saved_user.indexOf(req.params.userid);
+				if(index !== -1) {
+					quote.saved_user.splice(index, 1);
+					quote.save(function(err) {
+						if(err) {
+							res.json(oInternalError);
+							return;
+						}else {
+							res.json({
+								status: "ok",
+								data: "Success saved favourite quote"
+							});
+							return;
+						}
+					});
+				}else{//response not match
+					res.json({
+						status: "error",
+						data: "No saved user to remove"
+					});	
+				}
+			}
+		});
+		//Quote.findOneAndUpdate({_id: req.params.quoteid});	
+	});
+
+	// Signup page
 	webRouter.get("/signup",function(req, res){
 		res.render('../views/signup',{ message: req.flash('signupMessage'), user: req.user });
 	});

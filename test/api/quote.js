@@ -102,4 +102,14 @@ describe("Rest api Quote testing", function() {
 		});
 		done();
 	});
+	// Any case to test ?
+	// Im here hand on phone with current danhngon active
+	// I see a list danh ngon
+	// I click one quote
+	// I see detail of a quote
+	// I click create quote button and see create quote Interface
+	// I click save button to save quote
+	// When seeing a quote, i can click bookmark button i
+	// to save quote to my favorite quote
+	//
 });

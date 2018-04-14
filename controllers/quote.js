@@ -78,6 +78,14 @@ module.exports = {
 	doEdit: function(req, res){
 
 	},
+	doAddSavedUser: function(req, res) {
+		let quoteID = req.params.quoteID;
+		let userID = req.params.userID;
+		res.json({
+			status: "ok",
+			data: "Sucess Saved User"
+		});
+	},
 	confirmDelete: function(req, res){
 		console.log("quoteid:"+req.params.quoteid);
 		res.send("ok");	
