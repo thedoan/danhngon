@@ -105,29 +105,41 @@ module.exports = function(app, passport) {
 			});
 
 	});
-	// Ajax add saved user to quote
+// Ajax add saved user to quote
 	webRouter.get("/async/quote/saveuser/quoteid/:quoteid/userid/:userid", function(req, res, next) {
 		Quote.findById(req.params.quoteid, function(err, quote) {
 			if(err) {
 				res.json(oInternalError);
 				return;
 			}else{
-				quote.saved_user.push(req.params.userid);
-				quote.save(function(err) {
-					if(err) {
-						res.json(oInternalError);
-						return;
-					}else {
-						res.json({
-							status: "ok",
-							data: "Success saved favourite quote"
-						});
-						return;
-					}
-				});
+				let index = quote.saved_user.indexOf(req.params.userid);
+				if(index !== -1) {//already saved
+					res.json({
+						status: "error",
+						data: "Already saved"
+					});
+					return;
+				}else{
+					quote.saved_user.push(req.params.userid);
+					var numSavedUser = quote.saved_user.length;
+					quote.save(function(err) {
+						if(err) {
+							res.json(oInternalError);
+							return;
+						}else {
+							res.json({
+								status: "ok",
+								data: {
+									message: "Success saved favourite quote",
+									number: numSavedUser 
+								}
+							});
+							return;
+						}
+					});
+				}
 			}
 		});
-		//Quote.findOneAndUpdate({_id: req.params.quoteid});	
 	});
 	// Ajax remove saved user to quote
 	webRouter.get("/async/quote/removeuser/quoteid/:quoteid/userid/:userid", function(req, res, next) {
@@ -139,7 +151,9 @@ module.exports = function(app, passport) {
 				//handler length of userid
 				let index = quote.saved_user.indexOf(req.params.userid);
 				if(index !== -1) {
+					//remove this id away from saved_user array
 					quote.saved_user.splice(index, 1);
+					var numSavedUser = quote.saved_user.length;
 					quote.save(function(err) {
 						if(err) {
 							res.json(oInternalError);
@@ -147,7 +161,10 @@ module.exports = function(app, passport) {
 						}else {
 							res.json({
 								status: "ok",
-								data: "Success saved favourite quote"
+								data: {
+									message: "Success saved favourite quote",
+									number: numSavedUser
+								}
 							});
 							return;
 						}
@@ -156,6 +173,80 @@ module.exports = function(app, passport) {
 					res.json({
 						status: "error",
 						data: "No saved user to remove"
+					});	
+				}
+			}
+		});
+	});
+
+
+	// Ajax add liked user to quote
+	webRouter.get("/async/quote/savelike/quoteid/:quoteid/userid/:userid", function(req, res, next) {
+		Quote.findById(req.params.quoteid, function(err, quote) {
+			if(err) {
+				res.json(oInternalError);
+				return;
+			}else{
+				let index = quote.liked_user.indexOf(req.params.userid);
+				if(index !== -1) {//already liked
+					res.json({
+						status: "error",
+						data: "Already liked"
+					});
+					return;
+				}else{
+					quote.liked_user.push(req.params.userid);
+					var numLikedUser = quote.liked_user.length;
+					quote.save(function(err) {
+						if(err) {
+							res.json(oInternalError);
+							return;
+						}else {
+							res.json({
+								status: "ok",
+								data: {
+									message: "Success save liked quote",
+									number: numLikedUser
+								}
+							});
+							return;
+						}
+					});
+				}
+			}
+		});
+	});
+	// Ajax remove liked user to quote
+	webRouter.get("/async/quote/removelike/quoteid/:quoteid/userid/:userid", function(req, res, next) {
+		Quote.findById(req.params.quoteid, function(err, quote) {
+			if(err) {
+				res.json(oInternalError);
+				return;
+			}else{
+				//handler length of userid
+				let index = quote.liked_user.indexOf(req.params.userid);
+				if(index !== -1) {
+					quote.liked_user.splice(index, 1);
+					var numLikedUser = quote.liked_user.length;
+					quote.save(function(err) {
+						if(err) {
+							res.json(oInternalError);
+							return;
+						}else {
+							res.json({
+								status: "ok",
+								data: {
+									message: "Success remove liked quote",
+									number: numLikedUser
+								}
+							});
+							return;
+						}
+					});
+				}else{//response not match
+					res.json({
+						status: "error",
+						data: "No liked user to remove"
 					});	
 				}
 			}

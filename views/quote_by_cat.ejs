@@ -2,7 +2,7 @@
 if(quotes){
 	quotes.forEach(function(quote){
 %>
-<div class="card p-2">
+<div class="card p-2" data-id="<%= quote._id %>">
 	<blockquote class="blockquote blockquote-reverse">
 		<p>
 		<span class="fa fa-quote-left"></span>
@@ -16,11 +16,13 @@ if(quotes){
 	<!-- if loggedIn user -->
 	<% if(user){ 
 	  var arrSavedUser = quote.saved_user;
+	  var arrLikedUser = quote.liked_user;
 	  //console.log("arrSavedUser:");
 	  //console.log(arrSavedUser);
 	  //console.log("user id: "+user._id);
 		/*Check if this quote saved by this user*/
 	  var isSavedQuote = false;
+	  var isLikedQuote = false;
 	  for(let i = 0; i < arrSavedUser.length; i++){
 		  if(user._id.equals(arrSavedUser[i])){
 			//console.log("Saved quote id: "+user._id);
@@ -28,21 +30,35 @@ if(quotes){
 		  break;
 		  }
 	  }
+		for(let i = 0; i < arrLikedUser.length; i++){
+		  if(user._id.equals(arrLikedUser[i])){
+		  isLikedQuote = true;
+		  break;
+		  }
+	  }
 	  if(isSavedQuote){
 	%>
 		<!-- this quote in favorite show alert remove -->
-	  <a class="btn" data-toggle="modal" data-id="<%= quote._id %>" data-target="#removesaved" href="#">
+	  <a class="btn" data-task="save" data-toggle="modal" data-id="<%= quote._id %>" data-target="#removesaved" href="#">
 			<span class="fa fa-check">&nbsp;<%= quote.saved_user.length %> </span>
 		</a> |
 		<%}else{%>
 		<!-- save this quote to favorite -->
-	  <a class="btn" data-id="<%= quote._id %>" href="#">
+	  <a class="btn" data-task="save" data-id="<%= quote._id %>" href="#">
 			<span class="fa fa-save">&nbsp;<%= quote.saved_user.length %> </span>
 		</a> |
-		<%}%>
-		<a href="#">
+		<%}
+		 if(isLikedQuote) {
+		%>
+		<a data-task="like" data-liked="dung" href="#">
 			<span class="fa fa-heart">&nbsp;<%= quote.liked_user.length %></span> |
 		</a>
+		<%}else{%>
+		<a data-task="like" data-liked="sai" href="#">
+			<span class="fa fa-heart-o">&nbsp;<%= quote.liked_user.length %></span> |
+		</a>
+
+		<%}%>
 		<a href="#">
 			<span class="fa fa-comments">&nbsp;<%= quote.liked_user.length %></span> | 
 		</a>
@@ -54,7 +70,7 @@ if(quotes){
 			<span class="fa fa-save">&nbsp;<%= quote.saved_user.length %> </span>
 		</a>| 
 		<a href="#">
-			<span class="fa fa-heart">&nbsp;<%= quote.liked_user.length %></span> |
+			<span class="fa fa-heart-o">&nbsp;<%= quote.liked_user.length %></span> |
 		</a>
 		<a href="#">
 			<span class="fa fa-comments">&nbsp;<%= quote.liked_user.length %></span> | 

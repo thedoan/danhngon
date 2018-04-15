@@ -211,63 +211,43 @@
 					});
 
 					/*
-					 *Handler remove saved quote
-					 *
-					 */
-					/*
-					$(document).on('click','a[data-target="#removesaved"]', function(e){
-						//alert($(this).data("id"));
-						$("#confirmOKRemove").data("id", $(this).data("id"));
-					});
-					$(document).on('click','#confirmOKRemove', function(e){
-						//alert($(this).data("id"));
-						//async remove save quote from db
-					});
-					*/
-					/*
 					 * Handler save a quote to favorite
-					 * We know that both save and unsave favorite quote have data-id
-					 * So we select a tag with attribute data-id to: 
-					 *    - get it data-id
-					 *    - check if it has data-toggle, data-target so it savedQuote in favorite
-					 *    - else it not savedQuote so make it savedQuote 
-					 * i mean add add data-toggle, data-target to it
 					 */
-						$(document).on('click','a[data-id]', function(e){
+						$(document).on('click','a[data-task="save"]', function(e){
 							e.preventDefault();
 							var that = this;
+							var quoteID = $(this).parent().parent().data("id");
+							console.log("Quote ID:"+quoteID);
 							// Spiner this span
 							$(this).children('span').removeClass("fa-save").addClass("fa-spin");
 							//put quote id to confirmOkRemove	
-							if($(this).attr('data-target')) {
-								$("#confirmOKRemove").data("id", $(this).data("id"));
-							}else{
+							$("#confirmOKRemove").data("id", quoteID);
+							if(!$(this).attr('data-target')) {
+							//}else{
 								//Get user id, quote id
-								var quoteID = $(this).data("id"); 
 								$.get(encodeURI(
 									"/async/quote/saveuser/quoteid/"+quoteID+"/userid/"+userID)
 										,function(data){
-											console.log("save status:",data.status);
+											console.log("save user res:",data);
 											//remove spiner
 											$(that).children('span').removeClass("fa-spin");
 											if(data.status == "ok"){
 												//add check	
-												$(that).children('span').addClass("fa-check");
+												$(that).children('span').addClass("fa-check")
+													.empty().append("&nbsp;"+data.data.number);
 											}else{
 												//add back save	
 												$(that).children('span').addClass("fa-save");
 											}
 											//console.log(data);
 										});
-								// save favorite quote to db
-								// require that you already loggedIn
-								//set data-target data-modal
 								$(this)
 									.attr('data-toggle','modal')
 									.attr('data-target','#removesaved');
 							}
 						//alert($(this).data("id"));
 						});
+
 						$(document).on('click','#confirmOKRemove', function(e){
 							//alert($(this).data("id"));
 							//async remove save quote from db
@@ -275,7 +255,7 @@
 								$.get(encodeURI(
 									"/async/quote/removeuser/quoteid/"+$(this).data("id")+"/userid/"+userID)
 										,function(data){
-											console.log("remove status:",data.status);
+											console.log("remove user res:",data);
 											//remove spiner
 											$("a[data-id="+qId+"]").children('span').removeClass("fa-spin");
 											if(data.status == "ok"){
@@ -283,7 +263,9 @@
 													//remove data-toggle and data-target attr
 													.removeAttr("data-toggle").removeAttr("data-target")
 													//add save	
-													.children('span').addClass("fa-save");
+													.children('span').addClass("fa-save")
+													//Add num save
+													.children('span').empty().append("&nbsp;"+data.data.number);
 												
 											}else{
 												//add back check 
@@ -299,6 +281,58 @@
 							$("#removesaved").modal('hide');
 						});
 
+
+						// click Like
+						$(document).on('click', 'a[data-task="like"]', function(e) {
+							e.preventDefault();
+							var that = this;
+							var quoteID = $(this).parent().parent().data("id");
+							console.log("quoteID:", quoteID);
+							$(this).children('span').addClass("fa-spin");
+							if($(this).data("liked") == "dung") {
+								// async remove liked user
+								$.get(encodeURI(
+									"/async/quote/removelike/quoteid/"+quoteID+"/userid/"+userID)
+										,function(data){
+											console.log("remove like res:",data);
+											//remove spiner
+											$(that).children('span').removeClass("fa-spin");
+											if(data.status == "ok"){
+												//remove class fa-heart
+												//add class fa-heart-o
+												$(that).children('span').removeClass("fa-heart");
+												$(that).children('span').addClass("fa-heart-o")
+												.children('span').empty().append("&nbsp;"+data.data.number);
+												$(that).attr("data-liked", "sai");
+											}else{
+												// nothing to do yet
+												console.log("removelike do nothing");
+											}
+											//console.log(data);
+										});
+							}else{
+								// async add liked user
+								$.get(encodeURI(
+									"/async/quote/savelike/quoteid/"+quoteID+"/userid/"+userID)
+										,function(data){
+											console.log("save like res:",data);
+											//remove spiner
+											$(that).children('span').removeClass("fa-spin");
+											if(data.status == "ok"){
+												//remove class fa-heart-o
+												//add class fa-heart	
+												$(that).children('span').removeClass("fa-heart-o");
+												$(that).children('span').addClass("fa-heart")
+												.children('span').empty().append("&nbsp;"+data.data.number);
+												$(that).attr("data-liked", "dung");
+											}else{
+												//nothing to do yet
+												console.log("savelike do nothing");
+											}
+											//console.log(data);
+										});
+							}
+						});
 				});
 			<%
 			}
