@@ -1,5 +1,10 @@
 var User = require('../models/User');
+var Quote = require('../models/Quote');
 module.exports = {
+	/* ==============================================
+	 * Web request
+	 * ==============================================
+	 */
 	index: function(req, res){
 		if(req.isAuthenticated()){
 			res.render('../views/user/index',{
@@ -18,18 +23,18 @@ module.exports = {
 	},
 	doCreate: function(req, res){
 		/*
-		   let user = new User({
-		   name: req.body.name,
-		   email: req.body.email		
-		   });
-		   user.save( function( err, user ){
-		   if(!err){
-		   res.send(user);
-		   console.log('Saved user name: ' + user.name);
-		   console.log('_id of saved user: ' + user._id);
-		   }
-		   });
-		   */
+			 let user = new User({
+			 name: req.body.name,
+			 email: req.body.email		
+			 });
+			 user.save( function( err, user ){
+			 if(!err){
+			 res.send(user);
+			 console.log('Saved user name: ' + user.name);
+			 console.log('_id of saved user: ' + user._id);
+			 }
+			 });
+			 */
 		//or Chaining methods
 		let user = new User({
 			name: req.body.name,
@@ -53,24 +58,24 @@ module.exports = {
 		});
 		//or Model.create()
 		/*
-		   User.create({
-		   name: req.body.name,
-		   email: req.body.email		
-		   },function(err, user){
-		   if(!err){
-		   res.send(user);
-		   console.log('Saved user name: ' + user.name);
-		   console.log('_id of saved user: ' + user._id);
-		   }
+			 User.create({
+			 name: req.body.name,
+			 email: req.body.email		
+			 },function(err, user){
+			 if(!err){
+			 res.send(user);
+			 console.log('Saved user name: ' + user.name);
+			 console.log('_id of saved user: ' + user._id);
+			 }
 
-		   });
-		   */
+			 });
+			 */
 		/*
-		   console.log("name:"+req.body.name);
-		   console.log("email:"+req.body.email);
-		   console.log("password:"+req.body.password);
-		   console.log("re-password:"+req.body.repassword);
-		   */
+			 console.log("name:"+req.body.name);
+			 console.log("email:"+req.body.email);
+			 console.log("password:"+req.body.password);
+			 console.log("re-password:"+req.body.repassword);
+			 */
 	},
 	edit: function(req, res){
 
@@ -98,44 +103,44 @@ module.exports = {
 		if(req.query.404){
 			if(req.query.404 == 'user'){
 				res.send("User doesn't exist");
-				//user not exist
+//user not exist
 			}else if(req.query.404 == 'error'){
 				res.send("Error happened");
-				//has error
+//has error
 			}else{
 				res.send("Unexpected error");
-				//un expected error
+//un expected error
 			}
 		}else{
 			res.render('../views/user/login');
 		}
 		*/
-		res.render('../views/user/login');
-	},
+res.render('../views/user/login');
+},
 	doLogin: function(req, res){
 		if (req.body.email) {
 			console.log("email:"+req.body.email);
 			User.findOne(
-					{'email' : req.body.email},
-					'_id name email',
-					function(err, user) {
-						if (!err) {
-							if (!user){
-								res.redirect('/user/login?404=user');
-							}else{
-								req.session.user = {
-									"name" : user.name,
-									"email": user.email,
-									"_id": user._id
-								};
-								req.session.loggedIn = true;
-								console.log('Logged in user: ' + user);
-								res.redirect( '/user' );
-							}
-						} else {
-							res.redirect('/user/login?404=error');
+				{'email' : req.body.email},
+				'_id name email',
+				function(err, user) {
+					if (!err) {
+						if (!user){
+							res.redirect('/user/login?404=user');
+						}else{
+							req.session.user = {
+								"name" : user.name,
+								"email": user.email,
+								"_id": user._id
+							};
+							req.session.loggedIn = true;
+							console.log('Logged in user: ' + user);
+							res.redirect( '/user' );
 						}
-					});
+					} else {
+						res.redirect('/user/login?404=error');
+					}
+				});
 		} else {
 			res.redirect('/user/login?404=error');
 		}
@@ -145,5 +150,53 @@ module.exports = {
 	},	
 	profile: function(req, res){
 		res.render('../views/user/profile',{user: req.user});	
+	},
+	/* ==================================================
+	 * API request
+	 * ==================================================
+	 */
+	/* Search by content */
+	doApiSearch: function(req, res) {
+		var content = req.params.content;
+		var limit = req.params.limit;
+		var results = {
+			content: content,
+			limit: limit
+		};
+		res.json(results);
+		//Quote.find();
+	},
+	/* Search by content with limit */
+	doApiSearchLimit: function(req, res) {
+		console.log("doApiSearchLimit");
+		var defaultLimit = 15;
+		var searchContent = req.params.content;
+		console.log("content:", searchContent);
+		var limit = req.params.limit || defaultLimit;
+		console.log("limit:",limit);
+		/* Query by content */
+		Quote.find(
+			{$or: [
+				{content: { '$regex': searchContent, '$options': 'i' }}, 
+				{tags: {'$regex': searchContent, '$options': 'i' }}, 
+				{categories: {'$regex': searchContent, '$options': 'i' }}, 
+				{author: {'$regex': searchContent, '$options': 'i'}}
+			]}, 
+			function (err, quotes) {
+				//console.log("do Search");
+				if(err) {
+					//console.log("Error search:");
+					res.json({
+						status: "error",
+						message: "Internal Server Error"
+					});
+					return;
+				}
+				res.json({
+					status: "ok",
+					message: "Sucess find by content",
+					data: quotes 
+				});
+			});
 	}
 }

@@ -60,6 +60,21 @@ describe("Rest api Quote testing", function() {
 				done();
 			});
 	});
+	it("Should exist quote by content", function(done) {
+		//var content = "Điều duy nhất";
+		//var content = "Fred Rogers";
+		//var content = "Tam";
+		//var content = "Tam Hon";
+		var content = "Tâm Hồn";
+		superagent.get(url + "/api/quote/content/"+encodeURI(content)+"/limit/10")
+			.set("Authorization", "jwt "+token)
+			.then(function(res) {
+				expect(res.body.status).to.equal("ok");
+				expect(res.body.data.length).to.above(0);
+				console.log(res.body.data);
+				done();
+			});
+	});
 
 	it("Should success delete a quote by id", function(done) {
 		superagent.del(url+ "/api/quote/by/id/"+ quoteID)
@@ -72,7 +87,7 @@ describe("Rest api Quote testing", function() {
 			});	
 	});
 
-	it("Should success delete a quote by content", function(done) {
+	it.skip("Should success delete a quote by content", function(done) {
 		superagent.post(url + "/api/quote")
 			.send(aQuote)
 			.set("Authorization", "jwt "+token)
@@ -93,7 +108,7 @@ describe("Rest api Quote testing", function() {
 			});
 		done();
 	});
-	it("Should success get a list quote", function(done) {
+	it.skip("Should success get a list quote", function(done) {
 		superagent.get(url + "/api/quote")
 		.set("Authorization", "jwt " + token)	
 		.then(function(res) {

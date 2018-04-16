@@ -2,12 +2,15 @@
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 
+function toLower(v) {
+	  return v.toLowerCase();
+}
 // define the schema for our user model
 var userSchema = mongoose.Schema({
 
     local            : {
 				name		     : String,
-        email        : String,
+        email        : { type: String, lowercase: true, unique: true },
         password     : String
     },
     facebook         : {

@@ -4,6 +4,7 @@ var Quote = require("../models/Quote");
 var User = require("../models/User");
 var jwt = require('jsonwebtoken');
 var configAuth = require("../config/auth");
+var quoteController = require("../controllers/quote");
 
 var oInternalError = {
 	status: "error",
@@ -19,6 +20,8 @@ module.exports = function(app, passport) {
 	apiRouter.get("/", function(req, res, next) {
 		res.json("api route");	
 	});
+	/*get list quote by search*/
+	apiRouter
 	/*Add a new quote*/
 	apiRouter.post("/quote", function(req, res, next) {
 		// Check if this quote content exist
@@ -87,7 +90,7 @@ module.exports = function(app, passport) {
 	});
 	/*Update a quote by id */
 	apiRouter.put("/quote/by/id/:id", function(req, res, next) {
-		console.log("update by id: body:",req.body)
+		//console.log("update by id: body:",req.body)
 		Quote.findOneAndUpdate({_id: req.params.id}, {$set: req.body },{new: true}, function(err, updatedQuote) {
 			if(err) {
 				res.json(oInternalError);
@@ -121,6 +124,9 @@ module.exports = function(app, passport) {
 	apiRouter.get("/quote/content/:content", function(req, res, next) {
 		res.json("api quote:id route");
 	});
+	//get quote by content with limit
+	apiRouter.get("/quote/content/:content/limit/:limit", quoteController.doApiSearchLimit);
+
 	//get quote by author
 	apiRouter.get("/quote/author/:author", function(req, res, next) {
 		res.json("api quote:id route");
@@ -165,7 +171,7 @@ module.exports = function(app, passport) {
 	apiRouter.put("/quote/cat/", function(req, res, next) {
 		res.json("Put a quote");	
 	});
-	/* get list post */
+	/* get list by post */
 	apiRouter.get("/post", function(req, res, next) {
 		res.json("api post route");	
 	});
