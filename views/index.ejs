@@ -6,14 +6,6 @@
 	<body>
 		<% include pageHeader %>
 		<div class="container">
-			<!-- Header Jumbotron -->
-			<div class="jumbotron mt-2">
-				<h1>jumbotron</h1>
-				<p class="lead">Content inside jumbotron</p>
-				<p class="lead">Content inside jumbotron</p>
-				<img src="/onepixel" alt="">
-				<p class="lead">Content inside jumbotron</p>
-			</div>
 			<!-- main content -->
 			<div class="row">
 				<!-- Left Side -->
@@ -45,50 +37,11 @@
 				<!-- Right Side -->
 				<div class="col-md-3 col-sm-12">
 					<!-- Top Post -->
-					<div class="card mb-2">
-						<div class="card-header">
-							<h4>Top Post</h4>
-						</div>
-						<div class="card-body">
-							<ul class="" style="list-style:none">
-								<li class="">Cras justo odio</li>
-								<li class="">Dapibus ac facilisis in</li>
-								<li class="">Morbi leo risus</li>
-								<li class="">Porta ac consectetur ac</li>
-								<li class="">Vestibulum at eros</li>
-							</ul>
-						</div>
-					</div>
+					<%- include topPost %>
 					<!-- Top quote -->
-					<div class="card mb-2">
-						<div class="card-header">
-							<h4>Top quote</h4>
-						</div>
-						<div class="card-body">
-							<ul class="" style="list-style:none">
-								<li class="">Cras justo odio</li>
-								<li class="">Dapibus ac facilisis in</li>
-								<li class="">Morbi leo risus</li>
-								<li class="">Porta ac consectetur ac</li>
-								<li class="">Vestibulum at eros</li>
-							</ul>
-						</div>
-					</div>
-					<!-- Common Tag -->
-					<div class="card mb-2">
-						<div class="card-header">
-							<h4>Common tag</h4>
-						</div>
-						<div class="card-body">
-							<a class="btn" href="#"><span class="badge badge-bill badge-info p-2">love</span></a>
-							<a class="btn" href="#"><span class="badge badge-bill badge-light p-2">life</span></a>
-							<a class="btn" href="#"><span class="badge badge-bill badge-danger p-2">famous</span></a>
-							<a class="btn" href="#">spirit</a>
-							<a class="btn" href="#">bussiness</a>
-							<a class="btn" href="#">so young</a>
-							<a class="btn" href="#">albert enstein</a>
-						</div>
-					</div>
+					<%- include topQuote %>
+					<!-- Top Tag -->
+					<%- include topTag %>
 				</div>
 				<!-- End Right Side -->
 			</div>
