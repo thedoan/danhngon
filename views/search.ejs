@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<% include headerStuff %>
+	</head>
+	<body>
+		<% include pageHeader %>
+		<div class="container">
+			<!-- main content -->
+			<div class="row">
+				<!-- Left Side -->
+				<div class="col-md-9 col-sm-12">
+					<! -- breadcrumb -->
+					<ol class="breadcrumb alert-info">
+						<li class="breadcrumb-item">
+							<a href="/"><span class="fa fa-home"></span></a>
+						</li>
+						<li class="breadcrumb-item active">
+							Kết quả cho "<%= searchContent %>"
+						</li>
+					</ol>
+					<!-- End breadcrumb -->
+					<!-- list card -->
+					<div class="card-columns">
+						<% quotes.forEach(function(quote) {
+					%>	
+					<div class="card p-3" data-id="<%= quote._id %>">
+						<blockquote class="blockquote  mb-0 card-body">
+							<p><%= quote.content %></p>
+							<footer class="blockquote-footer">
+								<small class="text-muted">
+									<%= quote.author %> 
+								</small>
+							</footer>
+						</blockquote>
+						<div class="card-footer p-2">
+							<!-- if loggedIn user -->
+							<% if(user){ 
+					 var arrSavedUser = quote.saved_user;
+					 var arrLikedUser = quote.liked_user;
+					 //console.log("arrSavedUser:");
+					 //console.log(arrSavedUser);
+					 //console.log("user id: "+user._id);
+					 /*Check if this quote saved by this user*/
+					 var isSavedQuote = false;
+					 var isLikedQuote = false;
+					 for(let i = 0; i < arrSavedUser.length; i++){
+					 if(user._id.equals(arrSavedUser[i])){
+					 //console.log("Saved quote id: "+user._id);
+					 isSavedQuote = true;
+					 break;
+					 }
+					 }
+					 for(let i = 0; i < arrLikedUser.length; i++){
+					 if(user._id.equals(arrLikedUser[i])){
+					 isLikedQuote = true;
+					 break;
+					 }
+					 }
+					 if(isSavedQuote){
+					 %>
+					 <!-- this quote in favorite show alert remove -->
+					 <a class="btn" data-task="save" data-toggle="modal" data-id="<%= quote._id %>" data-target="#removesaved" href="#">
+						 <span class="fa fa-check">&nbsp;<%= quote.saved_user.length %> </span>
+					 </a> |
+					 <%}else{%>
+					 <!-- save this quote to favorite -->
+					 <a class="btn" data-task="save" data-id="<%= quote._id %>" href="#">
+						 <span class="fa fa-save">&nbsp;<%= quote.saved_user.length %> </span>
+					 </a> |
+					 <%}
+						 if(isLikedQuote) {
+						 %>
+						 <a data-task="like" data-liked="dung" href="#">
+							 <span class="fa fa-heart">&nbsp;<%= quote.liked_user.length %></span> |
+						 </a>
+						 <%}else{%>
+						 <a data-task="like" data-liked="sai" href="#">
+							 <span class="fa fa-heart-o">&nbsp;<%= quote.liked_user.length %></span> |
+						 </a>
+
+						 <%}%>
+						 <a href="#">
+							 <span class="fa fa-comments">&nbsp;<%= quote.liked_user.length %></span> | 
+						 </a>
+						 <a href="#">
+							 <span class="fa fa-tags">&nbsp;<%= quote.tags.length %></span>
+						 </a>
+						 <%}else {%>
+						 <a class="btn" data-toggle="modal" data-target="#alertLogin" href="#">
+							 <span class="fa fa-save">&nbsp;<%= quote.saved_user.length %> </span>
+						 </a>| 
+						 <a href="#">
+							 <span class="fa fa-heart-o">&nbsp;<%= quote.liked_user.length %></span> |
+						 </a>
+						 <a href="#">
+							 <span class="fa fa-comments">&nbsp;<%= quote.liked_user.length %></span> | 
+						 </a>
+						 <a href="#">
+							 <span class="fa fa-tags">&nbsp;<%= quote.tags.length %></span>
+						 </a>
+						 <% } %>
+						</div>
+					</div>
+					<%
+							}); 
+							%>
+					</div>
+					<!-- end list card -->
+				</div>
+				<!-- end Left Side -->
+				<!-- Right Side -->
+				<div class="col-md-3 col-sm-12">
+					<!-- Top Post -->
+					<%- include topPost %>
+					<!-- Top quote -->
+					<%- include topQuote %>
+					<!-- Top Tag -->
+					<%- include topTag %>
+				</div>
+				<!-- End Right Side -->
+
+			</div>
+		</div>
+		<!-- Modal remove saved -->
+		<div class="modal fade" id="removesaved" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<!--
+			 <div class="modal-header">
+			 <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+			 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			 <span aria-hidden="true">&times;</span>
+			 </button>
+			 </div>
+					-->
+					<div class="modal-body">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+
+						<h3>Không lưu Danh ngôn này nữa?</h3>
+						<p>Nó sẽ không xuất hiện trong danh sách yêu thích của bạn nữa ?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button"  id="confirmOKRemove" class="btn btn-success">Đồng ý</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- End remove saved-->
+
+
+		<!-- Modal Alert Login -->
+		<div class="modal fade" id="alertLogin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<!--
+			 <div class="modal-header">
+			 <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+			 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			 <span aria-hidden="true">&times;</span>
+			 </button>
+			 </div>
+					-->
+					<div class="modal-body">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+
+						<p>Bạn cần đăng nhập để sử dụng tính năng này.</p>
+						<p>Click <a class="btn btn-success fa fa-user" href="/login">ĐĂNG NHẬP</a> để đăng nhập.</p>
+					</div>
+					<!--
+			 <div class="modal-footer">
+			 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			 <button type="button" class="btn btn-primary">Save changes</button>
+			 </div>
+					-->
+				</div>
+			</div>
+		</div>
+		<!-- End Alert Login-->
+
+		<% include pageFooter %>
+		<% include footerStuff %>
+		<script>
+var host = "http://localhost:3000";
+<% 
+if(cats){
+	%>
+		var arrCats = [<%- cats %>	];
+	$(function(){
+		var userID =  $('input[name=userID]').val();
+		/* Handler search form */
+		$("#btnSearch").click(function(e) {
+			e.preventDefault();
+			var inputSearch = $("#inputSearch");
+			var action = $("#frmSearch").attr("action").toLowerCase();
+			if(inputSearch.val().length > 2){
+				window.location.href = action+"/"+inputSearch.val();
+			}else{
+				inputSearch.val('').focus();
+			}	
+
+		});
+		/*Append card to category by tag id*/
+		/* Tai sao minh khong lam tai lieu ve nhung phan viec minh da lam */
+		arrCats.forEach(function(cat){
+			var idCard = "#"+cat.tag;
+			$.get(encodeURI("/async/quote/"+cat.name), function(data){
+				$(idCard).append($(data));
+				if($(idCard+">.card").length % 6 == 0){
+					//add nut tai them
+					$(idCard).after(
+							'<p class="text-center">\
+							<a \
+							class="load_more fa fa-arrow-down" \
+							data-load-more="'+idCard+
+							'" data-query="'+cat.name+
+							'" href="#">\
+							<strong>Tải thêm</strong>\
+							</a>\
+							</p>'
+							);
+				}
+
+			});
+		});
+
+		//hand click tai them
+		$(document).on('click','.load_more', function(e){
+			e.preventDefault();
+			var idLoadMore = $(this).data("load-more");
+			var dataQuery = $(this).data("query");
+			//console.log("idLoadMore:"+idLoadMore+", dataQuery:"+dataQuery);
+			$.get(encodeURI(
+						"/async/quote/"+dataQuery
+						+"/"+$(idLoadMore+">.card").length)
+					,function(data){
+						if(data.length > 1){
+							$(idLoadMore).append($(data));
+							//console.log("Num of Card:"+$(idLoadMore+">.card").length);
+							if($(idLoadMore+">.card").length % 6 != 0){
+								//remove nut tai them
+								$("a[data-load-more='"+idLoadMore+"']").parent().remove();
+							}
+						}else{
+							//so ban ghi chia het cho 6 
+							$("a[data-load-more='"+idLoadMore+"']").parent().remove();
+						}
+					});
+		});
+
+		/*
+		 * Handler save a quote to favorite
+		 */
+		$(document).on('click','a[data-task="save"]', function(e){
+			e.preventDefault();
+			var that = this;
+			var quoteID = $(this).parent().parent().data("id");
+			console.log("Quote ID:"+quoteID);
+			// Spiner this span
+			$(this).children('span').removeClass("fa-save").addClass("fa-spin");
+			//put quote id to confirmOkRemove	
+			$("#confirmOKRemove").data("id", quoteID);
+			if(!$(this).attr('data-target')) {
+				//}else{
+				//Get user id, quote id
+				$.get(encodeURI(
+							"/async/quote/saveuser/quoteid/"+quoteID+"/userid/"+userID)
+						,function(data){
+							console.log("save user res:",data);
+							//remove spiner
+							$(that).children('span').removeClass("fa-spin");
+							if(data.status == "ok"){
+								//add check	
+								$(that).children('span').addClass("fa-check")
+									.empty().append("&nbsp;"+data.data.number);
+							}else{
+								//add back save	
+								$(that).children('span').addClass("fa-save");
+							}
+							//console.log(data);
+						});
+			$(this)
+				.attr('data-toggle','modal')
+				.attr('data-target','#removesaved');
+		}
+		//alert($(this).data("id"));
+		});
+
+		$(document).on('click','#confirmOKRemove', function(e){
+			//alert($(this).data("id"));
+			//async remove save quote from db
+			let qId = $(this).data("id");
+			$.get(encodeURI(
+						"/async/quote/removeuser/quoteid/"+$(this).data("id")+"/userid/"+userID)
+					,function(data){
+						console.log("remove user res:",data);
+						//remove spiner
+						$("a[data-id="+qId+"]").children('span').removeClass("fa-spin");
+						if(data.status == "ok"){
+							$("a[data-id="+qId+"]")
+								//remove data-toggle and data-target attr
+								.removeAttr("data-toggle").removeAttr("data-target")
+								//add save	
+								.children('span').addClass("fa-save")
+								//Add num save
+								.children('span').empty().append("&nbsp;"+data.data.number);
+
+						}else{
+							//add back check 
+							$("a[data-id="+qId+"]").children('span').addClass("fa-check");
+						}
+						//console.log(data);
+					});
+
+			// method to send quote to favorite bookmark
+
+			// handler data from server
+			// hide dialog
+			$("#removesaved").modal('hide');
+		});
+
+
+		// click Like
+		$(document).on('click', 'a[data-task="like"]', function(e) {
+			e.preventDefault();
+			var that = this;
+			var quoteID = $(this).parent().parent().data("id");
+			console.log("quoteID:", quoteID);
+			$(this).children('span').addClass("fa-spin");
+			if($(this).data("liked") == "dung") {
+				// async remove liked user
+				$.get(encodeURI(
+							"/async/quote/removelike/quoteid/"+quoteID+"/userid/"+userID)
+						,function(data){
+							console.log("remove like res:",data);
+							//remove spiner
+							$(that).children('span').removeClass("fa-spin");
+							if(data.status == "ok"){
+								//remove class fa-heart
+								//add class fa-heart-o
+								$(that).children('span').removeClass("fa-heart");
+								$(that).children('span').addClass("fa-heart-o")
+									.children('span').empty().append("&nbsp;"+data.data.number);
+								$(that).attr("data-liked", "sai");
+							}else{
+								// nothing to do yet
+								console.log("removelike do nothing");
+							}
+							//console.log(data);
+						});
+			}else{
+				// async add liked user
+				$.get(encodeURI(
+							"/async/quote/savelike/quoteid/"+quoteID+"/userid/"+userID)
+						,function(data){
+							console.log("save like res:",data);
+							//remove spiner
+							$(that).children('span').removeClass("fa-spin");
+							if(data.status == "ok"){
+								//remove class fa-heart-o
+								//add class fa-heart	
+								$(that).children('span').removeClass("fa-heart-o");
+								$(that).children('span').addClass("fa-heart")
+									.children('span').empty().append("&nbsp;"+data.data.number);
+								$(that).attr("data-liked", "dung");
+							}else{
+								//nothing to do yet
+								console.log("savelike do nothing");
+							}
+							//console.log(data);
+						});
+			}
+		});
+	});
+	<%
+}
+%>
+		</script>
+	</body>
+</html>
