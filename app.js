@@ -2,6 +2,7 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
+var logallerror = require('./middleware/logallerror');
 //var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
@@ -44,21 +45,33 @@ app.use(commonsMiddleware);
 routes(app,passport);
 
 // catch 404 and forward to error handler
+/*
 app.use(function(req, res, next) {
 	var err = new Error('Not Found');
 	err.status = 404;
 	next(err);
 });
-
+*/
+app.use(logallerror);
 // error handler
 app.use(function(err, req, res, next) {
 	// set locals, only providing error in development
 	res.locals.message = err.message;
 	res.locals.error = req.app.get('env') === 'development' ? err : {};
-
+	switch(err.status) {
+		case 404: {
+			res.render('404', {title: "404 File Not Found", user: req.user, err });
+			break;
+		}
+		default: {
+			res.render('500', {title: "505 Internal Server Error", user: req.user, err });
+		}
+	}
 	// render the error page
+	/*
 	res.status(err.status || 500);
-	res.render('error');
+	res.render('error', err);
+	*/
 });
 
 module.exports = app;

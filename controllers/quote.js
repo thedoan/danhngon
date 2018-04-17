@@ -166,7 +166,46 @@ res.render('../views/user/login');
 		res.json(results);
 		//Quote.find();
 	},
-	/* Search by content with limit */
+/* Do Web Search by content with limit */
+	doSearch: function(req, res, next) {
+		console.log("doApiSearchLimit");
+		var defaultLimit = 15;
+		var searchContent = req.params.content;
+		console.log("content:", searchContent);
+		var limit = req.params.limit || defaultLimit;
+		console.log("limit:",limit);
+		/* Query by content */
+		Quote.find(
+			{$or: [
+				{content: { '$regex': searchContent, '$options': 'i' }}, 
+				{tags: {'$regex': searchContent, '$options': 'i' }}, 
+				{categories: {'$regex': searchContent, '$options': 'i' }}, 
+				{author: {'$regex': searchContent, '$options': 'i'}}
+			]}, 
+			function (err, quotes) {
+				//console.log("do Search");
+				if(err) {
+					next(err);
+					/*
+					//console.log("Error search:");
+					res.json({
+						status: "error",
+						message: "Internal Server Error"
+					});
+					return;
+					*/
+				}
+				/*
+				res.json({
+					status: "ok",
+					message: "Sucess find by content",
+					data: quotes 
+				});
+				*/
+				res.render('search', { title: 'Kết quả cho "'+searchContent+'"', searchContent: searchContent, quotes: quotes });
+			});
+	},
+	/* Do API search by content with limit */
 	doApiSearchLimit: function(req, res) {
 		console.log("doApiSearchLimit");
 		var defaultLimit = 15;

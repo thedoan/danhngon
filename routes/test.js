@@ -13,6 +13,12 @@ testRouter.get('/onepixel', function(req, res, next){
 	//return image
 	requestInfo(req, res, next);	
 });
+testRouter.use("/500", function(req, res) {
+	res.render("500", { title:'500: Internal Server Error' });
+});
+testRouter.use("/404", function(req, res) {
+	res.render("404", { title:'404: File Not Found' });
+});
 
 module.exports = function(app, passport) {
 	app.use("/test", testRouter);

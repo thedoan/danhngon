@@ -80,9 +80,9 @@
 							<h4>Common tag</h4>
 						</div>
 						<div class="card-body">
-							<a class="btn" href="#">love</a>
-							<a class="btn" href="#">life</a>
-							<a class="btn" href="#">famous</a>
+							<a class="btn" href="#"><span class="badge badge-bill badge-info p-2">love</span></a>
+							<a class="btn" href="#"><span class="badge badge-bill badge-light p-2">life</span></a>
+							<a class="btn" href="#"><span class="badge badge-bill badge-danger p-2">famous</span></a>
 							<a class="btn" href="#">spirit</a>
 							<a class="btn" href="#">bussiness</a>
 							<a class="btn" href="#">so young</a>
@@ -158,11 +158,25 @@
 		<script>
 			var host = "http://localhost:3000";
 			<% 
+			/* Process with each category in array category */
 			if(cats){
 			%>
 				var arrCats = [<%- cats %>	];
+				/* init jquery */
 				$(function(){
 					var userID =  $('input[name=userID]').val();
+					/* Handler search form */
+					$("#btnSearch").click(function(e) {
+						e.preventDefault();
+						var inputSearch = $("#inputSearch");
+						var action = $("#frmSearch").attr("action").toLowerCase();
+						if(inputSearch.val().length > 2){
+							window.location.href = action+"/"+inputSearch.val();
+						}else{
+							inputSearch.val('').focus();
+						}	
+
+					});
 					/*Append card to category by tag id*/
 					arrCats.forEach(function(cat){
 						var idCard = "#"+cat.tag;

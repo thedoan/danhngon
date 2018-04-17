@@ -5,3 +5,5 @@ site danhngon
 * 
 * Search form to search quote 
 * 
+when user click search in search form this content will submit to server
+and action form will redirect 

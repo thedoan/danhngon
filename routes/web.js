@@ -6,6 +6,7 @@ var User = require("../models/User");
 var isLoggedIn = require("../middleware/loggedIn");
 var userRouter = require('./user');
 var userControl = require('../controllers/user');
+var quoteController = require('../controllers/quote');
 var jwt = require('jsonwebtoken');
 var configAuth = require("../config/auth");
 var oInternalError = {
@@ -22,6 +23,8 @@ module.exports = function(app, passport) {
 		//console.log(req.user.local.email);
 		res.render('index', { title: 'Danh Ngôn', user: req.user });
 	});
+	//Search 
+	webRouter.get('/search/:content', quoteController.doSearch);
 	webRouter.post("/api_login", function(req, res, next) {
 		User.findOne({'local.email': req.body.email}, function(err, user){
 			if(err) {
@@ -63,7 +66,16 @@ module.exports = function(app, passport) {
 		failureRedirect : '/login', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
 	}));
-
+	// Quote by categories page
+	webRouter.get('/category/:category', function(req, res, next) {
+		Quote.find({categories: {'$regex': req.params.category, '$options': 'i'}}, function(err, quotes) {
+			if(err){
+				next(err);
+			}else {
+				res.render('category', {category: req.params.category,quotes: quotes});
+			}
+		});				
+	});
 	// Get quote by categories
 	webRouter.get('/quote/:cat/', function(req, res, nex){
 		Quote.find({categories: {'$regex': req.params.cat, '$options': 'i'}}).select('content author saved_user liked_user tags')
